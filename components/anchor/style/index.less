@@ -1,0 +1,17 @@
+@import "../../style/mixins";
+@import "../../style/themes/default";
+
+.anchor {
+  &-container {
+    display: flex;
+    background-color: @fill-base;
+  }
+  &-item-wrapper {
+    padding: @h-spacing-md;
+  }
+  &-item {
+    &.active {
+      color: @brand-primary-tap;
+    }
+  }
+}
