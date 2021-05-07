@@ -5,20 +5,20 @@ title: Anchor
 subtitle: 锚点
 ---
 
-图标右上角的红点、数字或者文字。用于告知用户，该区域的状态变化或者待处理任务的数量。
+当页面需要锚点的导航，反映当前页面位置，可以通过锚点导航快速在各个锚点之间跳转。
 
 ### 规则
-
-- 当用户只需知道大致有内容更新时，应该使用红点型，如：社交中的群消息通知。
-- 当用户有必要知晓每条更新时，应该使用数字型。如：社交中的一对一的消息通知。
+- 每个锚点区域需要声明id，并在list中将id传入anchor中
+- list中的每个对象的数据，会作为renderItem的props透传
 
 ## API
+属性 | 说明 | 类型 | 默认值
+----|-----|------|------
+| affix | 是否吸顶 | boolean | true |
+| bounds | 锚点区域边界 | number | 0 |
+| getContainer | 指定滚动的容器 | () => HTMLElement | () => window |
+| getCurrentAnchor | 自定义高亮的锚点，返回高亮锚点的id | () => string |
+| offsetTop | 距离窗口顶部达到指定偏移量后触发 | number | 0 |
+| onChange | 监听锚点链接改变 | (currentActiveLink: string) => void | - |
+| onClick | `click` 事件的 handler | function(link: string) | - |
 
-| 属性          | 说明                                                                                             | 类型           | 默认值  |
-| ------------- | ------------------------------------------------------------------------------------------------ | -------------- | ------- |
-| size          | 大小，可选 `large` `small`                                                                       | string         | `small` |
-| text          | 展示的数字或文案，当为数字时候，大于 overflowCount <br/> 时显示为 ${overflowCount}+，为 0 时隐藏 | string\|number | -       |
-| corner        | 置于角落                                                                                         | boolean        | `false` |
-| dot           | 不展示数字，只有一个小红点                                                                       | boolean        | `false` |
-| overflowCount | 展示封顶的数字值                                                                                 | number         | `99`    |
-| hot           | 营销样式                                                                                         | boolean        | `false` |

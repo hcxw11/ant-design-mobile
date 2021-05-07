@@ -19,10 +19,13 @@ interface Props {
   offsetTop: number;
   bounds: number;
   style: React.CSSProperties;
+  className: string;
+  affix?: boolean;
+  renderItem: ((props: ItemRenderProps) => JSX.Element) | JSX.Element;
   onChange?: (currentActiveLink: string) => void;
+  onClick?: (config: string) => void;
   getContainer?: () => AnchorContainer;
   getCurrentAnchor?: () => string;
-  renderItem: ((props: ItemRenderProps) => JSX.Element) | JSX.Element;
 }
 
 interface State {
@@ -188,13 +191,17 @@ class Anchor extends React.Component<Props, State> {
     return getFunc();
   }
 
-  handleScrollTo = async (link: string) => {
-    this.setCurrentActiveLink(link);
+  handleScrollTo = async (config: AnchorConfig) => {
+    const { offsetTop, onClick } = this.props;
+    const { id } = config;
+    this.setCurrentActiveLink(id);
     const container = this.getContainer();
-    const { offsetTop } = this.props;
+    if (onClick) {
+      onClick(id)
+    }
 
     this.animating = true;
-    await scrollTo(link, { container, offsetTop });
+    await scrollTo(id, { container, offsetTop });
 
     // 最后一次滚动触发scroll事件存在一定的延时，稍微延迟一点再把标记位改为false
     setTimeout(() => {
@@ -228,21 +235,28 @@ class Anchor extends React.Component<Props, State> {
 
   render() {
     const { activeLink } = this.state;
-    const { style, list } = this.props;
-
-    return (
-      <Affix>
-        <div className="anchor-container" style={style}>
+    const { style, list, className, offsetTop, affix, onClick } = this.props;
+    const content = (
+      <div className={classnames(["anchor-container", className])} style={style}>
           {list.map((config) => (
             <div
               key={config.id}
               className="anchor-item-wrapper"
-              onClick={() => this.handleScrollTo(config.id)}
+              onClick={() => this.handleScrollTo(config)}
             >
               {this.renderItem({ ...config, active: activeLink === config.id })}
             </div>
           ))}
         </div>
+    )
+
+    if (!affix) {
+      return content
+    }
+
+    return (
+      <Affix offsetTop={offsetTop} target={this.getContainer}>
+        {content}
       </Affix>
     );
   }

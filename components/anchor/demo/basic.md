@@ -1,11 +1,9 @@
 ---
 order: 0
 title:
-  zh-CN: "类型、尺寸"
-  en-US: "Type, Size"
+  zh-CN: 基本
+  en-US: Basic
 ---
-
-button
 
 ```jsx
 import { Anchor } from 'antd-mobile';
@@ -34,6 +32,12 @@ const AnchorExample = () => (
       <Anchor
         list={list}
         offsetTop={36}
+        onClick={(config) => {
+          console.log(config);
+        }}
+        onChange={(config) => {
+          console.log(config);
+        }}
         // renderItem={({ id, title }) => <div key={id}>{title}</div>}
       />
       {list.map(({ id, title }) => (
